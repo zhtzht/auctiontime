@@ -1,0 +1,188 @@
+<% provide(:title, '竞拍宝箱')%>
+<h2>竞拍宝箱</h2>
+<table>
+	<thead>
+      <tr>				      
+	   <th>商品名称</th>
+       <th>拍卖状态</th>
+       <th>开始时间</th>
+       <th>结束时间</th>
+       <th>当前价格</th>
+       <th>我的出价</th>
+       <th>查看</th>
+       <th>删除</th>
+	  </tr>		
+	</thead>
+	<tbody>
+    <% @timeproducts.each do |timeproduct| %>
+      <tr>
+        <td><%= timeproduct.name %></td>
+        <td>
+        	<% if timeproduct.status == 1 %>
+        	<span class="bidstatus" value= "<%= timeproduct.id %>">等待拍卖</span>
+        	<% elsif timeproduct.status == 2 %>
+        	<span class="bidstatus" value= "<%= timeproduct.id %>">正在拍卖</span>
+        	<% elsif timeproduct.status == 3 %>
+        	<span class="bidstatus" value= "<%= timeproduct.id %>">拍卖结束</span>
+        	<% end %>
+        </td>
+        <td><%= timeproduct.starttime.to_s(:db) %></td>
+        <td><%= timeproduct.continuedtime.to_s(:db) %></td>
+        <td>
+        	<% @aucrecords = Aucrecord.where("timeproduct_id = ?", timeproduct.id).order("bidnum DESC").limit(1) %>
+        	<% if !@aucrecords.empty? %>
+        	<span id="current<%= timeproduct.id %>"><%= @aucrecords[0].bidnum %></span>
+        	<% else %>
+        	<span id="current<%= timeproduct.id %>"><%= timeproduct.lowprice %></span>        	
+        	<% end %>
+        </td>
+        <td>
+        	<% @aucrecords = Aucrecord.where("timeproduct_id = ? and user_id = ?", timeproduct.id, current_user.id).order("bidnum DESC").limit(1) %>
+        	<% if !@aucrecords.empty? %>
+        	<%= @aucrecords[0].bidnum %>
+        	<% else %>
+        	--        	
+        	<% end %>
+        </td>
+        <td><%= link_to '查看详情', "/merproduct/#{timeproduct.id}" %></td>
+        <td><button type="button" class="btn btn-default deletebutton" id="deletebutton<%= timeproduct.id %>" value="<%= timeproduct.id %>">删除</button></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="warndiv" id="warndiv">
+	<div class="warncon"><span>确定删除吗？</span></div>
+	<div class="warnbutton">
+		<button type="button" class="btn btn-default leftbutton" id="surebutton">确定</button>
+		<button type="button" class="btn btn-default rightbutton" id="cancelbutton">取消</button>
+	</div>
+</div>
+<style>
+	.warndiv{
+		float: left;
+		width: 250px;
+		height: 130px;
+		background: #EFEFEF;
+		position: fixed;
+		left:600;
+		top:500;
+		display: block;
+		z-index: 999;
+		border: 2px solid  #333333;
+		border-radius: 4px;
+		filter:alpha(opacity=90); /*IE滤镜，透明度50%*/
+		-moz-opacity:0.9; /*Firefox私有，透明度50%*/
+		opacity:0.9;/*其他，透明度50%*/	
+		display: none;	
+	}
+	.warncon{
+		width: 100%;
+		height: 40px;
+		margin-top: 25px;
+		float: left;
+		line-height: 40px;
+		font-size: 20px;
+		text-align: center;
+	}
+	.warnbutton{
+		float: left;
+		hegiht: 35px;
+		width: 100%;
+		margin-top: 20px;
+	}
+	.leftbutton{
+		float: left;
+		margin-left: 50px;
+	}
+	.rightbutton{
+		float: right;
+		margin-right: 50px;
+	}
+</style>
+<script type="text/javascript">
+     
+	 var height = $(window).height()
+	 var width = $(window).width()
+	 $("#warndiv").css("top",height/2-65)
+	 $("#warndiv").css("left",width/2-125)
+	 var allheight = $(document).height()
+	 $(".hero-unit").css("height",allheight+60)
+	$(".deletebutton").click(function(){
+		var timeproduct_id = $(this).attr('value')
+		$("#warndiv").css('display','block')
+		$("#surebutton").click(function(){
+			$("#warndiv").css('display','none')
+			$.ajax({     
+			    type: 'post',
+			    url: "/timeproducts/deleteut",
+			    data: { 
+			       user_id: '<%= current_user.id %>',
+			       timeproduct_id: timeproduct_id
+			      },                                                                                  
+			    success: function( data ){ 
+			      if(data.msg == 1){
+			      	window.location.reload()
+			      }
+			    }
+			})			
+		})
+		$("#cancelbutton").click(function(){
+		   $("#warndiv").css('display','none')
+		})
+	})	
+	var timeproductinfos = []
+	console.log($(".bidstatus"))
+	$.each($(".bidstatus"),function(){
+		if($(this).text() == "正在拍卖"){
+			var id = $(this).attr('value')
+			var str = ""+id+"|"+$("#current"+id+"").text()+""
+			timeproductinfos.push(str)
+		}
+	})
+	var statusdata
+	function statusupdate(){
+		if(timeproductinfos.length > 0){
+			$.ajax({     
+			    type: 'get',
+			    url: "/timeproducts/getdecide",
+			    data: { 
+			      timeproductinfos: timeproductinfos
+			      },                                                                                  	 
+			    success: function( data ){ 
+		          if(data.msg > 0){
+//		          	window.location.href = '/timeproducts/auctionbox'
+                    window.location.reload()
+		          }
+			    }
+			})		
+		}else{
+		  clearTimeout(statusdata)
+		}
+		statusdata = setTimeout("statusupdate()",60000)
+    }
+    statusupdate()
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+<% provide(:title, '竞拍订单')%>
+<h2>竞拍订单</h2>
+<table>
+	<thead>
+		<tr>
+			<th>商品名称</th>
+			<th>订单编号</th>
+			<th>最终交易价格</th>
+			<th>最终交易人</th>
+			<th>交易时间</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @productorders.each do |productorder| %>
+		<tr>
+			<th>
+               <% @timeproduct = Timeproduct.find_by(productorder.timeproduct_id) %>
+               <% if !@timeproduct.nil? %>
+               <%= @timeproduct.name %>
+               <% end %>
+			</th>
+			<th><%= productorder.ordernum %></th>
+			<th><%= productorder.finalprice %></th>
+			<th>
+				<% @user = User.find_by(id: productorder.user_id) %>
+				<% if !@user.nil? %>
+				<%= @user.id %>
+				<% end %>
+			</th>
+			<th><%= productorder.tradingtime.to_formatted_s(:db) %></th>
+			<th></th>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

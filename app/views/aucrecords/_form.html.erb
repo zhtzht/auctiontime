@@ -1,0 +1,37 @@
+<%= form_for(@aucrecord) do |f| %>
+  <% if @aucrecord.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@aucrecord.errors.count, "error") %> prohibited this aucrecord from being saved:</h2>
+
+      <ul>
+      <% @aucrecord.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :timeproduct_id %><br>
+    <%= f.number_field :timeproduct_id %>
+  </div>
+  <div class="field">
+    <%= f.label :bidnum %><br>
+    <%= f.number_field :bidnum %>
+  </div>
+  <div class="field">
+    <%= f.label :bidder %><br>
+    <%= f.text_field :bidder %>
+  </div>
+  <div class="field">
+    <%= f.label :bidtime %><br>
+    <%= f.datetime_select :bidtime %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.number_field :status %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,37 @@
+<h1>Listing productorders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Timeproduct</th>
+      <th>User</th>
+      <th>Finalprice</th>
+      <th>Tradingtime</th>
+      <th>Status</th>
+      <th>Ordernum</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @productorders.each do |productorder| %>
+      <tr>
+        <td><%= productorder.timeproduct_id %></td>
+        <td><%= productorder.user_id %></td>
+        <td><%= productorder.finalprice %></td>
+        <td><%= productorder.tradingtime %></td>
+        <td><%= productorder.status %></td>
+        <td><%= productorder.ordernum %></td>
+        <td><%= link_to 'Show', productorder %></td>
+        <td><%= link_to 'Edit', edit_productorder_path(productorder) %></td>
+        <td><%= link_to 'Destroy', productorder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Productorder', new_productorder_path %>

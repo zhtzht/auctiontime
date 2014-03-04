@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Timeproduct:</strong>
+  <%= @aucrecord.timeproduct_id %>
+</p>
+
+<p>
+  <strong>Bidnum:</strong>
+  <%= @aucrecord.bidnum %>
+</p>
+
+<p>
+  <strong>Bidder:</strong>
+  <%= @aucrecord.bidder %>
+</p>
+
+<p>
+  <strong>Bidtime:</strong>
+  <%= @aucrecord.bidtime %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @aucrecord.status %>
+</p>
+
+<%= link_to 'Edit', edit_aucrecord_path(@aucrecord) %> |
+<%= link_to 'Back', aucrecords_path %>

@@ -1,0 +1,45 @@
+<h2>所有商品</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>商品名称</th>
+      <th>最低价</th>
+      <th>每次最低加价</th>
+      <th>开始时间</th>
+      <th>持续时间</th>
+      <th>状态</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @timeproducts.each do |timeproduct| %>
+      <tr>
+        <td><%= timeproduct.name %></td>
+        <td><%= timeproduct.lowprice %></td>
+        <td><%= timeproduct.merprice %></td>
+        <td><%= timeproduct.starttime.to_s(:db) %></td>
+        <td><%= timeproduct.continuedtime.to_s(:db) %></td>
+        <td>
+        	<% if timeproduct.status == 1 %>
+        	即将拍卖
+        	<% elsif timeproduct.status == 2 %>
+        	正在拍卖
+        	<% elsif timeproduct.status == 3 %>
+        	拍卖结束
+        	<% end %>
+        </td>
+        <td><%= link_to '详情', timeproduct %></td>
+        <td><%= link_to '修改', edit_timeproduct_path(timeproduct) %></td>
+        <td><%= link_to '删除', timeproduct, method: :delete, data: { confirm: '确定删除?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to '创建新的商品', new_timeproduct_path %>

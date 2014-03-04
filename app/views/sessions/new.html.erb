@@ -1,0 +1,27 @@
+
+
+
+<% provide(:title, "登录") %>
+
+<div class="row">
+  <div class="span6 offset2">
+  	<h2>登录</h2>
+    <%= form_for(:session, url: sessions_path) do |f| %>
+       
+      <div class="fieldclass">
+      <%= f.label :name, "用户名", class:"formlabel"  %>
+      <%= f.text_field :name, class: "forminput"  %>
+      </div>
+
+
+      <div class="fieldclass">
+      <%= f.label :password, "密码", class:"formlabel"  %>
+      <%= f.password_field :password, class: "forminput"  %>
+      </div>
+      
+      <%= f.submit "登录", class: "btn btn-primary", id: "loginbutton" %>
+    <% end %>
+
+    <p class="appendp">没有帐号? <%= link_to "立即注册!", signup_path %></p>
+  </div>
+</div>

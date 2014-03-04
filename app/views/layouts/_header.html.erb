@@ -1,0 +1,66 @@
+
+<header class="navbar navbar-fixed-top navbar-inverse"  role="navigation">
+	<div class="navbar-inner">
+		<div class="container">
+			<%= link_to "时间竞拍", root_path, id: "logo", class: "navtop" %>
+			<nav>
+			
+					
+				<ul class="nav pull-right">	
+				  <% if signed_in? %>
+					<li>
+						<%= link_to "竞拍商品",  controller: "timeproducts", action: "allproduct" %>
+					</li>
+					<li>
+						<%= link_to "竞拍宝箱", controller: "timeproducts", action: "auctionbox" %>
+					</li>	
+					<li>
+						<%= link_to "竞拍订单", controller: "timeproducts", action: "timeorder" %>
+					</li>	
+					<% if current_user.level == 2 %>	
+					 <li id="fat-menu" class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">菜单<b class="caret"></b> </a>
+							<ul class="dropdown-menu">
+								<li>
+									<%= link_to "所有竞拍信息",  controller: 'timeproducts', action: 'allproduct' %>								
+								</li>
+								
+								<li>
+									<%= link_to "竞拍设置", timeproducts_path %>								
+								</li>							
+							</ul>
+					   </li>					
+					<% end %>					
+
+					
+                  <li id="fat-menu" class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心<b class="caret"></b> </a>
+						<ul class="dropdown-menu">
+							<li>
+								<%= link_to "个人信息", current_user %>								
+							</li>
+							<li>
+								<%= link_to "修改密码", edit_user_path(current_user) %>								
+							</li>		
+							
+							<li>
+						       <%= link_to "退出", signout_path, method: "delete" %>
+					      </li>					
+						</ul>
+				   </li>					
+															
+
+					
+					<% else %>
+					
+					<li>
+						<%= link_to "登录", signin_path %>
+					</li>
+					<% end %>
+
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+

@@ -1,0 +1,461 @@
+<% provide(:title, '竞拍的具体信息')%>
+<h2>竞拍的具体信息</h2>
+<style>
+	.contdiv{
+		width: 70%;
+		margin: 0 auto;
+		color: #595959;
+	}
+	.divtitle{
+		width: 100%;
+		height: 50px;
+		background: #DADADA;
+		float: left;
+		font-size: 30px;
+		line-height: 50px;
+		text-align: center;
+		color: #333333;
+	}
+    .divcon{
+    	width: 100%;
+		height: 30px;
+		float: left;
+		margin-top:5px;
+		font-size: 16px;
+		line-height: 40px;
+    }
+    .dvone{
+    	width: 50%;
+    	float: left;
+    	height: 30px;
+    }
+    .dvonelable{
+    	float: left;
+    	height: 30px;
+    	display: block;   	
+    	width: 100px;
+    	text-align: right;
+    	line-height: 30px;
+    }
+    .dvonecon{
+    	float: left;
+    	display: block;
+    	line-height: 30px;
+    	margin-left: 10px;
+    }
+    .dvtwo{
+    	width: 50%;
+    	float: right;
+    	height: 30px;
+    }
+    .divmaincon{
+    	width: 100%;
+    	height: 200px;
+    	margin-top: 5px;
+    	float: left;
+    }
+    .dmcdivone{
+    	width: 100%;
+    	float: left;
+    }
+    .dmconrtext{
+    	width: 100px;
+    	float: left;
+    	margin-top: 12px;
+    	margin-left: 110px;
+    }
+    .dmcpone{
+    	width: 70px;
+    	height: 30px;
+    	border: 1px solid #EFEFEF;
+    	float: left;
+    	text-align: center;
+    	line-height: 30px;
+    	margin-top: 10px;
+    	margin-left: 15px;
+    	background: #CC0000;
+    	font-size: 20px;
+    	color: #FFFFFF;
+    	cursor: pointer;
+    	border-radius: 3px;
+    }
+    .dmcdoone{
+    	width: 100%;
+    	float: left;
+    	height: 25px;
+    	background: #3A87AD;
+    	text-align: center;
+    	line-height: 25px;
+    	color: #B00100;
+    	font-size: 16px;
+    }
+    .dmcdoospan{
+    	display: block;
+    	margin-left: 80px;
+    	float: left;
+    }
+    .dmcdotwo{
+    	width: 100%;
+    	float: left;
+    	height: 50px;
+    	background: #FFFCEB;
+    	margin-top: 0px;
+    	border: 1px solid #EED97C;
+    }
+    .dmcptwo{
+    	width: 120px;
+    	height: 30px;
+    	border: 1px solid #EFEFEF;
+    	float: right;
+    	text-align: center;
+    	line-height: 30px;
+    	margin-top: 10px;
+    	margin-right: 140px;
+    	background: #3A87AD;
+    	font-size: 20px;   
+    	cursor: pointer; 	
+    }
+    .dmcdivtwo{
+    	width: 100%;
+    	height: 100px;
+    	float: left;
+    }
+    .dmcttitle{
+    	width: 100%;
+    	float: left;
+    	height: 30px;
+    }
+    .titlespan{
+    	float: left;
+    	display: block;
+    	margin-left: 200px;
+    }
+    .dmctcon{
+     	width: 100%;
+    	float: left;
+    }
+    table, th, tr{
+    	border: 1px solid #2E2F30;
+    }
+    thead{
+    	background: #E6E6E6;
+    }
+    .spancolor{
+    	color: #CC0000;
+    }
+</style>
+<div class="contdiv">
+  	<div class="divtitle"><span>时间:<%= @timeproduct.name %></span></div>
+  	<div class="divcon">
+  		<div class="dvone">
+  			<span class="dvonelable">商品编号:</span>
+  			<span class="dvonecon spancolor"><%= @timeproduct.id %></span>
+  		</div>
+  		
+  	</div>
+  	<div class="divcon">
+  		<div class="dvone">
+  			<span class="dvonelable">最低价:</span>
+  			<span class="dvonecon spancolor"><%= @timeproduct.lowprice %>元</span>
+  		</div>
+  		<div class="dvtwo"> 			
+  			<span class="dvonelable">最低加价:</span>
+  			<span class="dvonecon spancolor"><%= @timeproduct.merprice %>元</span>
+  		</div>
+  	</div>
+  	<div class="divcon">
+  		<% if !@curaucrecord.empty? %>
+  		<div class="dvone">
+  			<span class="dvonelable">当前价格:</span>
+  			<span class="dvonecon spancolor"  id="dvoneconprice"><%= @curaucrecord[0].bidnum %>元</span>
+  		</div>
+  		<div class="dvtwo"> 			
+  			<span class="dvonelable">出价人:</span>
+  			<span class="dvonecon spancolor">
+  				<% @user = User.find_by(id: @curaucrecord[0].user_id) %>
+  				<% if !@user.nil? %>
+  				<%= @user.name %>
+  				<% end %>
+  			</span>
+  		</div>
+  		<% else %>
+  		<div class="dvone">
+  			<span class="dvonelable">当前价格:</span>
+  			<span class="dvonecon spancolor" id="dvoneconprice"><%= @timeproduct.lowprice %>元</span>
+  		</div>
+  		<div class="dvtwo"> 			
+  			<span class="dvonelable">出价人:</span>
+  			<span class="dvonecon spancolor">无人</span>
+  		</div>
+  		<% end %>
+  	</div>
+  	<div class="divcon">
+  		<div class="dvone">
+  			<span class="dvonelable">当前状态:</span>
+  			
+  			<% if @timeproduct.status == 1 %>
+  			<span class="dvonecon spancolor" id="dvoneconstatus">即将拍卖</span>
+  			<% elsif @timeproduct.status == 2 %>
+  			<span class="dvonecon spancolor" id="dvoneconstatus">正在拍卖</span>
+  			<% elsif @timeproduct.status == 3 %>
+  			<span class="dvonecon spancolor" id="dvoneconstatus">拍卖结束</span>
+  			<% end %>
+  			
+  		</div> 
+  		<div class="dvtwo"> 			
+  			<span class="dvonelable">剩余时间:</span>
+  			<span class="dvonecon spancolor" id="dvonecontime"></span>
+  		</div> 		
+  	</div>
+    <div class="divmaincon">
+    	<div class="dmcdivone">
+  <!--  		<div class="dmcdoone" id="dmcdooneid"></div>  -->
+    		<div class="dmcdotwo">
+	    		<input class="dmconrtext" type="text" id="pricetext" />
+	    		<span class="dmcpone" id="dmcaddauc">出价</span>
+	    		<span class="dmcptwo" id="dmcaddbag">加入竟拍箱</span>
+    		</div>
+    	</div>
+    	<div class="dmcdivtwo">
+    		<div class="dmcttitle">
+    			<span class="titlespan">竞拍记录(共<span id="bidcount"><%= @allaucrecords.length %></span>次出价)</span>
+    		</div>
+    		<div class="dmctcon">
+    			<table>
+				   <thead>
+				    <tr>				      
+				      <th>出价人</th>
+				      <th>价格</th>
+				      <th>时间</th>
+				    </tr>
+				  </thead>   
+				  <tbody>
+				  	<% @aucrecords.each do |aucrecord| %>
+				  	<tr>				  		
+				  		<th>
+				  			<% @user = User.find_by(id: aucrecord.user_id) %>
+				  			<% if !@user.nil? %>
+				  			<%= @user.name %>
+				  			<% end %>
+				  		</th>
+				  		<th><%= aucrecord.bidnum %>元</th>
+				  		<th><%= aucrecord.bidtime.to_formatted_s(:db) %></th>
+				  	</tr>
+				  	<% end %>
+				  </tbody>				
+    			</table>
+    		</div>
+    	  <div class="pagediv">
+				<%= will_paginate @aucrecords, :previous_label=> '上一页', :next_label=> '下一页' %>
+          </div>
+    	</div>
+    </div>
+</div>
+<script type="text/javascript">
+	var allheight = $(document).height()
+	$(".hero-unit").css("height",allheight+60)
+  //拍卖物品加入竟宝箱
+   $("#dmcaddbag").click(function(){
+	$.ajax({     
+	    type: 'post',
+	    url: "/timeproducts/addut",
+	    data: { 
+	       user_id : '<%= current_user.id %>',
+	       timeproduct_id: '<%= @timeproduct.id %>'
+	      },                                                                                  
+	    success: function(data){ 
+	      if(data.msg == 1){
+	      	alert("成功添加到竟宝箱")
+	      }else if(data.msg == 2){
+	      	alert("竞拍箱里面已经包含此物品了")
+	      }
+	    }
+	})   	
+   })
+
+ // 出价问题
+    $("#dmcaddauc").click(function(){
+    	var value = $("#pricetext").val()
+        $.ajax({     
+		   type: 'get',
+		   url: "/aucrecords/getaucrecord",
+		   data: { 
+			  timeproduct_id : '<%= @timeproduct.id %>',			 
+			  },                                                                                  
+		   success: function( data ){ 
+			  if(value != ''){
+			  if(data.aucrecord){
+			  	 var agio = parseInt(value) - parseInt(data.aucrecord.bidnum)
+			  }else{
+			  	var agio = parseInt(value) - parseInt($("#dvoneconprice").text())
+			  }			 
+			   if(agio >= <%= @timeproduct.merprice.to_i %>){
+					$.ajax({     
+					    type: 'post',
+					    url: "/aucrecords/generateaucr",
+					    data: { 
+					       timeproduct_id : '<%= @timeproduct.id %>',
+					       user_id: <%= current_user.id %>,
+					       bidnum: value
+					      },                                                                                  
+					    success: function( data ){ 
+					      if(data.msg == 1){
+					      	window.location.reload()
+					      }else if(data.msg == 2){
+					      	alert("出价失败，请您不要连续出价！")
+					      }
+					    }
+					 })  
+								  	
+				  }else{
+				  	alert("出价失败！出价不能低于当前价格加上每次上最少加价数额")
+				  	window.location.reload()
+				  }
+			  }else{
+			       alter("出价信息不能为空，请填写正确的竞拍价格！")
+			  }
+			  }
+		  })     	
+    		
+    	
+    })
+
+	function timechange(diftime,id,status,text){
+		var days = 	parseInt(diftime/(3600*24))	
+		var hours = parseInt((diftime%(3600*24))/3600)
+		var minutes = parseInt((diftime%3600)/60)
+		var seconds = (diftime%3600)%60				
+		var timestr = ''
+		hours = checkTime(hours)
+		minutes = checkTime(minutes)
+		seconds = checkTime(seconds)
+		if(days != 0){
+			timestr = ""+days+"天"+hours+"时"+minutes+"分"+seconds+"秒"
+		}else{
+		if(hours != 0){
+					timestr = ""+hours+"时"+minutes+"分"+seconds+"秒"
+				}
+				else{
+					if(minutes != 0){
+					    timestr = ""+minutes+"分"+seconds+"秒"
+					}else{
+					    if(seconds != 0){
+					        timestr = ""+seconds+"秒"	
+					     }else if(seconds == 0){
+		                           $.ajax({     
+									    type: 'post',
+									    url: "/timeproducts/updateproduct",
+									    data: { 
+									       id: id,
+									       status: status 
+									    },                                                                                 
+									    success: function(data){ 
+									    	if(data.msg == 1){
+									    	  $("#dvoneconstatus").text(""+text+"")
+									    	}else if(data.msg == 2){
+									    	  $("#dvoneconstatus").text(""+text+"")	
+									    	  
+									    	}							        
+									    }
+									})				         
+					      }
+					  }
+				  }				
+		     }				
+		 $("#dvonecontime").text(""+timestr+"") 	
+	}
+	var pricerefresh;
+	var timerefresh;
+	var timedif = <%= Time.now.tv_sec %> - parseInt(new Date().getTime().toString().substr(0,10))
+	function refresh(){
+		
+		var curtime = parseInt(new Date().getTime().toString().substr(0,10))
+		var starttime = <%= @timeproduct.starttime.tv_sec %>
+	    var endtime = <%= @timeproduct.continuedtime.tv_sec %>
+	    if(starttime <= curtime && curtime <= endtime){
+		$.ajax({     
+		    type: 'get',
+		    url: "/timeproducts/getresult",
+		    data: { 
+		       timeproduct_id: '<%= @timeproduct.id %>',
+		       value: parseInt($("#dvoneconprice").text())
+		      },                                                                                  
+		    success: function( data ){ 
+		     if(data.msg == 2){
+		     	window.location.reload()
+		     }
+		    }
+		})		    	
+	    }
+        pricerefresh = setTimeout("refresh()",60000) 
+	}
+	refresh()
+	function timeupdate(){
+	var curtime = parseInt(new Date().getTime().toString().substr(0,10))
+	var starttime = <%= @timeproduct.starttime.tv_sec %>
+	var endtime = <%= @timeproduct.continuedtime.tv_sec %>
+		if($("#dvoneconstatus").text() == "即将拍卖"){
+			$("#pricetext").css('display','none')
+			$("#dmcaddauc").css('display','none')
+			$("#pricetext").css('display','block')
+			$("#dmcaddauc").css('display','block')
+			var diftime = starttime - curtime - timedif
+			var id = "<%= @timeproduct.id %>"
+			var status = '2'
+			var text = '正在拍卖'
+			timechange(diftime,id,status,text)
+		
+		}else if($("#dvoneconstatus").text() == "正在拍卖"){
+			$("#pricetext").css('display','block')
+			$("#dmcaddauc").css('display','block')
+			var diftime = endtime - curtime - timedif
+			var id = "<%= @timeproduct.id %>"
+			var status = '2'
+			var text = '拍卖结束'
+			if(diftime >= 0){
+			 timechange(diftime,id,status,text)	
+			}
+		}else if($("#dvoneconstatus").text() == "拍卖结束"){
+			$("#pricetext").css('display','none')
+			$("#dmcaddauc").css('display','none')
+			$("#dvoneconstatus").text("拍卖结束")	
+			$("#dvonecontime").text("该拍卖已结束")
+			clearTimeout(pricerefresh)
+			$.ajax({     
+			    type: 'post',
+			    url: "/timeproducts/generateorder",
+			    data: { 
+			       timeproduct_id: "<%= @timeproduct.id %>",	
+			       user_id: "<%= current_user.id %>"
+			      },                                                                                  
+			    success: function( data ){ 
+                    if(data.msg == 1){
+                    	alert("你成功的拍到当前物品，请到竞拍订单查看情况")
+                    }
+			    }
+			})		
+			clearInterval(timerefresh)
+		}
+	}
+	timeupdate()
+//     pricerefresh = setInterval(refresh,6000)
+    var timerefresh =  setInterval(timeupdate,500)
+	         		   
+ 
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,330 @@
+<style>
+	.timeall {
+		width: 830px;
+		color: ##595959;
+	}
+	.merproduct {
+		width: 185px;
+		height: 240px;
+		background: #BBBBBB;
+		float: left;
+		margin-left: 10px;
+		margin-top: 10px;
+		overflow: hidden;
+		padding: 5px;
+	}
+	.mptop {
+		width: 185px;
+		height: 180px;
+		float: left;
+		position: relative;
+		background: #FFFFFF;
+	}
+	.mpbottom {
+		width: 185px;
+		height: 60px;
+		background: #FBF3F6;
+		float: left;
+		position: relative;
+		
+	}
+	.clickonea {
+		width: 165px;
+		margin: 0 auto;
+		height: 50px;
+		margin-top: 10px;
+		display: block;
+	}
+	.mpname {
+		width: 165px;
+		margin: 0 auto;
+		background: #DADADA;
+		height: 50px;
+		display: block;
+		text-align: center;
+		font-size: 25px;
+		line-height: 50px;
+		cursor: pointer;
+	}
+	.clicktwoa {
+		width: 165px;
+		height: 30px;
+		font-size: 12px;
+		display: block;
+		margin: 0 auto;
+		margin-top: 3px;
+		text-align: center;
+		overflow: hidden;
+		color: #595959;
+		text-decoration: none;
+	}
+	.timeinfo {
+		width: 165px;
+		height: 30px;
+		font-size: 12px;
+		float: left;
+		margin-left: 10px;
+		margin-top: 10px;
+		text-align: center;
+	}
+	.mptspantwo {
+		margin-left: 3px;
+		float: left;
+	}
+	.mpbdivone {
+		width: 165px;
+		height: 25px;
+		float: left;
+		margin: 7px 10px 0;
+		font-size: 12px;
+		line-height: 25px;
+	}
+	.mpbspanone {
+		margin-left: 3px;
+		float: left;
+	}
+	.mpbdivtwo {
+		margin-top: 0px;
+	}
+	.mptstatus {
+		width: 165px;
+		margin: 0 auto;
+		height: 30px;
+		margin-top: 5px;
+		display: block;
+		font-size: 16px;
+		text-align: center;
+		line-height: 30px;
+		color: #CC0000;
+	}
+	.mpbottoma{
+		width: 115px;
+		height: 35px;
+		font-size: 20px;
+		text-align: center;
+		color: #FFFFFF;
+		text-decoration: none；
+		float: left;
+		margin: 15px auto 0;
+		background: #3A87AD;
+		display: block;
+		line-height: 35px;
+		cursor: pointer;
+		border: 1px solid #EFEFEF;
+		border-radius: 3px;
+	}
+	.mptspancolor{
+		color: #CC0000;
+	}
+	
+</style>
+<% provide(:title, "所有拍卖物品")%>
+<h2>所有拍卖物品</h2>
+<div class="timeall">	
+		<% if !@timeproducts.empty? %>
+		<% @timeproducts.each do |timeproduct| %>
+		   <div class="merproduct" id="merproduct<%= timeproduct.id %>" value="<%= timeproduct.id %>">
+				<div class="mptop" id="mptop<%= timeproduct.id %>">
+					<a href="/merproduct/<%= timeproduct.id %>" class="clickonea"><span class="mpname"><%= timeproduct.name %></span></a>			
+					<a href="/merproduct/<%= timeproduct.id %>" class="clicktwoa">查看拍卖具体信息</a>					
+					<% if timeproduct.status == 1 %>
+					   <span class="mptstatus" id="mptstatus<%= timeproduct.id %>" ss="<%= Time.now.tv_sec %>" >即将拍卖</span>
+					   <div class="timeinfo" id="timeinfo<%= timeproduct.id %>">
+						<span class="mptspantwo mptspanstatus" id="mptspanstatus<%= timeproduct.id %>" value="<%= timeproduct.starttime.tv_sec %>">距离开始:</span>																		
+						<span class="mptspantwo mptspantime mptspancolor" id="mptspantime<%= timeproduct.id %>"></span>
+					   </div>
+					<% elsif timeproduct.status == 2 %>
+					  <span class="mptstatus" id="mptstatus<%= timeproduct.id %>">正在拍卖</span>
+					  <div class="timeinfo" id="timeinfo<%= timeproduct.id %>">
+						<span class="mptspantwo mptspanstatus" id="mptspanstatus<%= timeproduct.id %>" value="<%= timeproduct.continuedtime.tv_sec %>">剩余时间:</span>							
+						<span class="mptspantwo mptspantime mptspancolor"  id="mptspantime<%= timeproduct.id %>"></span>
+					  </div>  
+					 <% end %>													
+				</div>
+				<div class="mpbottom" id="mpbottom<%= timeproduct.id %>">
+					<% if timeproduct.status == 1 %>
+					  <span  class="mpbottoma" id="mpbottoma<%= timeproduct.id %>" value="<%= timeproduct.id %>">加入竞拍箱</span>
+					<% elsif timeproduct.status == 2 %>
+					<% @aucrecords = Aucrecord.where(timeproduct_id: timeproduct.id).order("bidtime DESC") %>
+					<% if @aucrecords.empty? %>
+						<div class="mpbdivone">
+						<span class="mpbspanone">当前价格:</span>
+						<span class="mpbspanone mpbspanoneprice mptspancolor" id="mpbspanoneprice<%= timeproduct.id %>" value="<%= timeproduct.id %>"><%= timeproduct.lowprice %>元</span>
+						</div>
+						<div class="mpbdivone mpbdivtwo">
+						<span class="mpbspanone">出价次数:</span>
+						<span class="mpbspanone mpbspanonenum mptspancolor" id="mpbspanonenum<%= timeproduct.id %>" value="<%= timeproduct.id %>">0</span>
+						</div>	
+					<% else%>
+					    <div class="mpbdivone">
+						<span class="mpbspanone">当前价格:</span>
+						<span class="mpbspanone mpbspanoneprice mptspancolor" id="mpbspanoneprice<%= timeproduct.id %>" value="<%= timeproduct.id %>"><%= @aucrecords[0].bidnum %>元</span>
+						</div>
+						<div class="mpbdivone mpbdivtwo">
+						<span class="mpbspanone">出价次数:</span>
+						<span class="mpbspanone mpbspanonenum mptspancolor" id="mpbspanonenum<%= timeproduct.id %>" value="<%= timeproduct.id %>"><%= @aucrecords.length %></span>
+						</div>
+					<% end %>
+					<% end %>		
+				</div>
+			</div>		
+		<% end %>
+		<% end %>
+
+</div>
+<div class="pagediv">
+<%= will_paginate @endmaterial_ids, :previous_label=> '上一页', :next_label=> '下一页' %>
+</div>
+<script type="text/javascript">
+	var allheight = $(document).height()
+	$(".hero-unit").css("height",allheight+60)
+// 加入竞拍箱
+   $(".mpbottoma").click(function(){
+   	var timeproduct_id = $(this).attr("value")
+	$.ajax({     
+	    type: 'post',
+	    url: "/timeproducts/addut",
+	    data: { 
+	       user_id : '<%= current_user.id %>',
+	       timeproduct_id: timeproduct_id
+	      },                                                                                  
+	    success: function(data){ 
+	      if(data.msg == 1){
+	      	alert("成功添加到竟宝箱")
+	      }else if(data.msg == 2){
+	      	alert("竞拍箱中已经包含次物品了")
+	      }
+	    }
+	})      	
+   })
+   var timedif = <%= Time.now.tv_sec %> - parseInt(new Date().getTime().toString().substr(0,10))
+   function timechange(diftime,id,text1,text2,status){               
+				var days = 	parseInt(diftime/(3600*24))	
+		        var hours = parseInt((diftime%(3600*24))/3600)
+				var minutes = parseInt((diftime%3600)/60)
+				var seconds = (diftime%3600)%60				
+				var timestr = ''
+				hours = checkTime(hours)
+				minutes = checkTime(minutes)
+				seconds = checkTime(seconds)
+				if(days != 0){
+				   timestr = ""+days+"天"+hours+"时"+minutes+"分"+seconds+"秒"
+				}else{
+					if(hours != 0){
+						timestr = ""+hours+"时"+minutes+"分"+seconds+"秒"
+					}
+				    else{
+				        if(minutes != 0){
+				        	timestr = ""+minutes+"分"+seconds+"秒"
+				        }else{
+				        	if(seconds != 0){
+				        	 timestr = ""+seconds+"秒"	
+				        	}else if(seconds == 0){
+	                           $.ajax({     
+								    type: 'post',
+								    url: "/timeproducts/updateproduct",
+								    data: { 
+								       id: id,
+								       status: status
+								    },                                                                                 
+								    success: function(data){ 
+								    	if(data.msg == 1){
+								    	  $("#mptstatus"+id+"").text(""+text1+"")
+								    	  $("#mptspanstatus"+id+"").text(""+text2+"")
+								    	  $("#mptspanstatus"+id+"").attr("value",data.endtime)
+								    	}							        
+								    }
+								})				         
+				        	  }
+				          }
+				       }					
+				   }   	
+				   $("#mptspantime"+id+"").text(""+timestr+"")
+   }
+   var allprefresh;
+   function updateprice(){
+   	var timeproduct_ids = []
+   	$(".merproduct").each(function(index, merdom){
+   		var timeproduct_id = $(merdom).attr("value")
+   		if($("#mptstatus"+timeproduct_id+"").text() == "正在拍卖"){
+   		   timeproduct_ids.push(timeproduct_id)
+   		 }
+   	})
+   	if(timeproduct_ids.length > 0){
+   	$.ajax({     
+		type: 'get',
+		url: "/timeproducts/getpn",
+	    data: { 
+			timeproduct_ids: timeproduct_ids,
+		 },                                                                                  
+		success: function( data ){ 
+           $.each(data.msg,function(n,value){
+           	$("#mpbspanoneprice"+value.timeproduct_id+"").text(""+value.curprice+"元")
+           	$("#mpbspanonenum"+value.timeproduct_id+"").text(""+value.curnum+"元")
+           })
+		}
+	}) 
+	} 
+   	allprefresh = setTimeout("updateprice()",60000)
+   }
+   updateprice()
+   function updatetime(){
+	$(".merproduct").each(function(index, merdom){
+		var id = $(merdom).attr("value")
+		var curtime = parseInt(new Date().getTime().toString().substr(0,10))	
+		if($("#mptstatus"+id+"").text() == "即将拍卖"){
+			var starttime = parseInt($("#mptspanstatus"+id+"").attr("value"))
+			var diftime = starttime - curtime - timedif
+			var text1 = "正在拍卖"
+			var text2 = "剩余时间"
+			var status = '2'
+			if(curtime <= starttime){
+				timechange(diftime,id,text1,text2,status)				
+			}
+		}else if($("#mptstatus"+id+"").text() == "正在拍卖"){
+			var endtime = parseInt($("#mptspanstatus"+id+"").attr("value"))
+			var diftime = endtime - curtime - timedif
+			if(curtime <= endtime){
+				var text1 = "拍卖结束"
+				var text2 = ""
+				var status = '3'
+				timechange(diftime,id,text1,text2,status)
+			}
+			
+		}
+		
+	})
+	}
+    updatetime()
+    setInterval(updatetime,500)
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+<h1>Listing aucrecords</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Timeproduct</th>
+      <th>Bidnum</th>
+      <th>Bidder</th>
+      <th>Bidtime</th>
+      <th>Status</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @aucrecords.each do |aucrecord| %>
+      <tr>
+        <td><%= aucrecord.timeproduct_id %></td>
+        <td><%= aucrecord.bidnum %></td>
+        <td><%= aucrecord.bidder %></td>
+        <td><%= aucrecord.bidtime %></td>
+        <td><%= aucrecord.status %></td>
+        <td><%= link_to 'Show', aucrecord %></td>
+        <td><%= link_to 'Edit', edit_aucrecord_path(aucrecord) %></td>
+        <td><%= link_to 'Destroy', aucrecord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Aucrecord', new_aucrecord_path %>

@@ -1,0 +1,57 @@
+<style>
+	#errordivs {
+		border: 1px solid #EF3E3E;
+		width: 80%;
+		margin: 0 auto;
+		margin-buttom: 10px;
+		display: none
+	}
+	.check {
+		font-size: 14px;
+		color: #EF3E3E;
+		display: block;
+	}
+</style>
+
+
+<%= form_for(@timeproduct) do |f| %>
+  <% if @timeproduct.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @timeproduct.errors.count %>个错误发生在表单提交的时候:</h2>
+
+      <ul>
+      <% @timeproduct.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div id="errordivs"></div>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.date_select :name, :order => [:year, :month, :day], :use_month_numbers => true %>
+  </div>
+  <div class="field">
+    <%= f.label :lowprice %><br>
+    <%= f.number_field :lowprice %>
+  </div>
+  <div class="field">
+    <%= f.label :merprice %><br>
+    <%= f.number_field :merprice %>
+  </div>
+  <div class="field">
+    <%= f.label :starttime %><br>
+    <%= f.datetime_select :starttime, :use_month_numbers => true %>
+  </div>
+  <div class="field">
+    <%= f.label :continuedtime %><br>
+    <%= f.datetime_select :continuedtime, :use_month_numbers => true %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.number_field :status %>
+  </div>
+  <div class="actions">
+    <%= f.submit '创建' %>
+  </div>
+<% end %>

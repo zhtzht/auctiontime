@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Timeproduct:</strong>
+  <%= @productorder.timeproduct_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @productorder.user_id %>
+</p>
+
+<p>
+  <strong>Finalprice:</strong>
+  <%= @productorder.finalprice %>
+</p>
+
+<p>
+  <strong>Tradingtime:</strong>
+  <%= @productorder.tradingtime %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @productorder.status %>
+</p>
+
+<p>
+  <strong>Ordernum:</strong>
+  <%= @productorder.ordernum %>
+</p>
+
+<%= link_to 'Edit', edit_productorder_path(@productorder) %> |
+<%= link_to 'Back', productorders_path %>
